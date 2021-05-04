@@ -1,0 +1,17 @@
+<!-- Generic error page -->
+<!-- Possible template variables: error_message, informative_message -->
+
+{% extends "calendarApp/layout.html" %}
+
+{% block title %} Error Page {% endblock %}
+
+{% block body %}
+<div class="alert alert-danger text-center" role="alert">
+    <strong>{{ error_message }} </strong>
+</div>
+{% if informative_message %}
+<div class="alert alert-info text-center" role="alert">
+  <strong>{{ informative_message }} </strong>
+</div>
+{% endif %}
+{% endblock %}

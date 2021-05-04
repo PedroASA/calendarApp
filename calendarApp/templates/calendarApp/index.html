@@ -1,0 +1,109 @@
+<!-- Template used to render the home page and the create-event form page. -->
+<!-- Possible template variable: title, form, cover. -->
+{% extends "calendarApp/layout.html" %}
+{% load static %}
+
+{% block title %}
+  {{ title }}
+{% endblock %}
+
+{% block body %}
+
+<!-- Home Page -->
+{% if cover %}
+  <div id="cover"> 
+      <h1 class="float-md-start" style="font-family:cursive;"> Home </h3>
+        <hr>
+    <!-- Image Carroussel -->
+    <div>
+      <main class="px-3">
+        <div id="carouselExampleDark" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="10000">
+              <img src="{% static 'calendarApp/profile-page.png' %}" class="d-block w-100 img-fluid" alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h4> </strong>Profile</strong> </h4>
+                <p> </strong>In this view you can personalize your profile and be reminded of upcoming events.</strong></p>
+              </div>
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+              <img src="{% static 'calendarApp/calendar-page.png' %}" class="d-block w-100 img-fluid" alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h4> <strong>Calendar</strong> </h4>
+                <p> <strong>Use this view to create, edit and view events by date. <strong></p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img src="{% static 'calendarApp/home-page.png' %}" class="d-block w-100 img-fluid" alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <h4> <strong>Home</strong> </h4>
+                <p> <strong>Here you can learn more about the app by reading about it.</strong></p>
+              </div>
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </main>
+    </div>
+    <!-- README content -->
+    <div>
+      <article>
+        {{ content | safe }}
+      </article>
+  </div>
+
+  </div>
+
+<!-- Create Event Page   -->
+{% elif form %}
+  <form action="{% url 'create-event' %}" method="POST">
+    {% csrf_token %}
+
+    <div class="form-row">
+        <div class="col">
+            <strong>{{ form.title.label_tag }}</strong>
+          {{form.title}}
+        </div>
+        <div class="col">
+            <strong>{{ form.time.label_tag }} </strong>
+                {{ form.time }}
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col">
+            <strong>{{ form.description.label_tag }}</strong>
+            {{ form.description }}
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col">
+            <strong>{{ form.address.label_tag }}</strong>
+            {{form.address}}
+        </div>
+        <div class="col">
+          <strong> Participants </strong>
+          <input type="text" name="participants" >
+      </div>
+    </div>
+    <input type="hidden" name="day" value="{{ day }}"/>
+    <input type="hidden" name="month" value="{{ month }}"/>
+    <input type="hidden" name="year" value="{{ year }}"/>
+    <div class="form-row justify-content-end"><button type="submit" class="col-sm-2  btn btn-lg btn-primary">Submit</button></div>
+  </form>
+
+{% endif %}
+{% endblock %}

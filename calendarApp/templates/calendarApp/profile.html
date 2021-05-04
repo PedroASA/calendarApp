@@ -1,0 +1,111 @@
+<!-- Renders profile page with user information and an events pagination object -->
+{% extends "calendarApp/layout.html" %}
+{% load static %}
+
+{% block title %}
+  Profile
+{% endblock %}
+
+{% block body %}
+<!-- Change avatar modal -->
+<div class="modal fade" id="modal" aria-hidden="true" aria-labelledby="" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div id="modal1-info">
+            <div id="error-alert" class="alert alert-danger" role="alert" style="display: none;">
+            </div>
+            <input id="avatar-url" type="url" />
+        </div>
+        <div class="modal-footer">
+          <button onclick = "save(true)" id="create-event-btn"class="btn btn-primary"> 
+            Save Changes!
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div id="profile">
+    <div class="container-fluid">
+      <div class="jumbotron">
+        <!-- Profile Navbar -->
+        <nav class="navbar">
+          <div class="container-fluid">
+            <a class="navbar-brand">
+              <span id="profile-avatar">
+                {% if profile.avatar %}
+                    <img id="profile-img" src="{{ profile.avatar }}" alt="" >
+                {% else %}
+                    <img id="profile-img" src="{% static 'calendarApp/profile.svg' %}" alt="" >
+                {% endif %} 
+              </span>
+              Profile <span id="profile-id" class="badge rounded-pill text-white bg-dark">{{ profile.id }} </span>
+            </a>
+            {% if user.is_authenticated and user.id == profile.id %}
+            <a id="avatar-btn" class="font-125 nav-link" data-bs-toggle="modal" data-bs-target="#modal" href=""> 
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+                <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+              </svg>
+                Change avatar
+            </a>
+
+            <a id="bio-btn" class="font-125 nav-link" href="">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-textarea" viewBox="0 0 16 16">
+                <path d="M1.5 2.5A1.5 1.5 0 0 1 3 1h10a1.5 1.5 0 0 1 1.5 1.5v3.563a2 2 0 0 1 0 3.874V13.5A1.5 1.5 0 0 1 13 15H3a1.5 1.5 0 0 1-1.5-1.5V9.937a2 2 0 0 1 0-3.874V2.5zm1 3.563a2 2 0 0 1 0 3.874V13.5a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V9.937a2 2 0 0 1 0-3.874V2.5A.5.5 0 0 0 13 2H3a.5.5 0 0 0-.5.5v3.563zM2 7a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm12 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+              </svg>
+              Change bio
+            </a>
+            {% endif %}
+          </div>
+        </nav>
+        <!-- Profile information -->
+        <h3 class="display-4" > {{ profile.username }} </h3>
+        <p class="lead"> {{ profile.email }} </p>
+        <hr class="my-4">
+          <p id="profile-bio">{% if profile.bio %}{{ profile.bio }}{% endif %}</p>
+          <div id="btn-div" style="display: none;"> <button onclick = "save(false)" id="save-btn" class="btn btn-success"> Save Changes! </button> </div>
+      </div>
+  
+      <!-- Paginated Events -->
+      {% if not user.is_authenticated %}
+        <h3 class="text-white"> Login to find out more! </h3>
+      {% else %}
+        {% if user.id == profile.id %}
+          <h3 class="text-white"> Next events this month </h3>
+        {% else %}
+          <h3 class="text-white"> Events in common with you </h3>
+        {% endif %}
+        {% for event in page_obj %}
+          <div class="event list-group-item list-group-item-action">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1"> {{event.title}} </h5>
+            </div>
+            <p class="mb-1"> {{event.description}} </p>
+            <small class="text-muted"> Date: {{event.date}}</small>
+          </div>
+        {% endfor %}
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            <li class="page-item"> <a class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }} </a> </li>
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}"> Next </a>
+            </li>
+            {% endif %}
+          </ul>
+        </nav>
+    {% endif %}
+        
+  </div>
+</div>
+{% csrf_token %}
+{% endblock %}
+{% block script %}
+    <script src="{% static 'calendarApp/profile.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,159 @@
+<!-- Renders generic skeleton of page with no actual content -->
+{% extends "calendarApp/layout.html" %}
+{% load static %}
+
+{% block title %}
+  Calendar
+{% endblock %}
+
+{% block body %}
+
+<!-- display error messages occurred on fetch -->
+<div id="error-alert-body" class="alert alert-danger" role="alert" style="display: none;"></div>
+</div>
+
+
+<!-- Triggered by clicking on day of month -->
+<!-- Displays all events in clicked day -->
+<div class="modal fade" id="modal" aria-hidden="true" aria-labelledby="" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <!-- Events shall be rendered here -->
+      <div id="modal1-info">
+      </div>
+      <div class="modal-footer">
+        <!-- Renders create-event form -->
+        <button id="create-event-btn" class="btn btn-primary"> 
+          Create a new event! 
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Triggered by clicking on any event from previous modal -->
+<!-- Renders information about the clicked event and allows the event host to edit the participants.  -->
+<div class="modal fade" id="modal2" aria-hidden="true" aria-labelledby="" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-footer justify-content-between">
+        <a class="btn btn-primary" data-bs-target="#modal" data-bs-toggle="modal" data-bs-dismiss="modal" role="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+          </svg>
+        </a>
+        <!-- Display error messages occurred on trying to edit participants -->
+        <div id="error-alert-modal" class="alert alert-danger" role="alert" style="display: none;"></div>
+      </div>
+        <!-- Event Information -->
+        <div id="event">
+          <div class="card text-center">
+            <div class="card-header">
+              <!-- Event title -->
+                <h4> <strong id="event-title"></strong></h4> </a>
+            </div>
+            <div class="card-body">
+              <!-- Event id -->
+              <input id="event-id" type="hidden" />
+              <div>
+                <!-- Event description -->
+                <p class="card-text text-left" id="event-description"> </p>
+              </div>
+              <hr>
+                <!-- Event participants -->
+                <table class="table table-dark table-bordered table-hover">
+                  <thead>
+                    <tr id="participants-head"> 
+                      <th scope="col"> Username </th>
+                      <th scope="col"> Role </th>
+                    </tr>
+                  </thead>
+                  <tbody id="event-participants">
+                    <tr>
+                      <td> <strong id="event-host"></strong> </td> 
+                      <td> <strong> Host </strong> </td>
+                     </tr>
+                  </tbody>
+                </table>
+                <!-- Add participants field -->
+                <!-- Displayed on the #edit-event-btn is clicked -->
+                <div id="participant-input" class="form-floating" style="display: none;"> 
+                  <label for="new-participants"> Add participants </label>
+                  <input id="new-participants" type="text" class="form-control" style="margin-bottom: 10px"/>
+                </div>
+                <!-- Triggers event edition -->
+                <button class="btn btn-dark" id="edit-event-btn"> </button>
+                <button class="btn btn-danger" id="delete-event-btn"></button>
+              </div>
+            </div>
+            <div class="card-footer text-muted">
+                <nav class="row">
+                  <!-- Event day -->
+                  <span class="col-4 align-items-center" 
+                  style="margin-bottom: 0px; left: 0px;display: flex;">
+                    Day: <strong id="event-date"></strong> 
+                  </span>
+                  <!-- Event time -->
+                  <span class="col-4 align-items-center" 
+                  style="margin-bottom: 0px; left: 0px;display: flex;">
+                    Time: <strong id="event-time"></strong> 
+                </span>
+                <!-- Event location -->
+                <span id="address-div" class="col-4 align-items-center" 
+                  style="margin-bottom: 0px; left: 0px;display: flex;">
+                    Location: <strong id="event-address"></strong> 
+                </span>
+                </nav>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<div id="calendar" class="container-fluid">
+  <!-- Months collpsable Navbar -->
+  <div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-dark p-4">
+      <ul id="months" class="nav">
+      </ul>
+    </div>
+  </div>
+  <nav class="navbar navbar-dark bg-dark">
+    <div id="months-nav" class="container-fluid text-center">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"> </span>
+      </button>
+      <h4 id="month-name"></h4>
+      <h5> Months </h5>
+    </div>
+  </nav>
+  <!-- Days of the week  -->
+  <div id="days" class="row">
+    <div class="col day title">
+    </div>
+    <div class="col day title">
+    </div>
+    <div class="col day title">
+    </div>
+    <div class="col day title">
+    </div>
+    <div class="col day title">
+    </div>
+    <div class="col day title">
+    </div>
+    <div class="col day title">
+    </div>
+  </div>
+  <!-- All days of the month -->
+  <div id="events" class="row">
+  </div>
+</div>
+{% csrf_token %}
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'calendarApp/calendar.js' %}"></script>
+{% endblock %}
