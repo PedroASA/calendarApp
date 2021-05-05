@@ -1,5 +1,15 @@
 # Calendar App
 
+* ### [Heroku App](https://pedroasa-calendar-app.herokuapp.com/)
+
+## Youtube Demo
+
+<a href="https://youtu.be/JFlMH_ygqOw">
+      <p align="center">
+            <img width="60%" src="http://img.youtube.com/vi/JFlMH_ygqOw/0.jpg" alt="IMAGE ALT TEXT">
+      </p>
+</a>
+
 ## Project Description
 The app is a simple calendar used to store events - much like [Google Calendar](https://calendar.google.com/).
 
@@ -119,9 +129,3 @@ This project is more complex than the previous projects mainly because it's more
 ```bash
 python manage.py runserver 
 ```
-
-## Site
-https://pedroasa-calendar-app.herokuapp.com/
-
-## Demo
-[![Everything Is AWESOME](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://www.youtube.com/watch?v=StTqXEQ2l-Y "Everything Is AWESOME")
