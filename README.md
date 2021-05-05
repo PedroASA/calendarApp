@@ -119,3 +119,9 @@ This project is more complex than the previous projects mainly because it's more
 ```bash
 python manage.py runserver 
 ```
+
+## Site
+https://pedroasa-calendar-app.herokuapp.com/
+
+## Demo
+[![Everything Is AWESOME](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://www.youtube.com/watch?v=StTqXEQ2l-Y "Everything Is AWESOME")
