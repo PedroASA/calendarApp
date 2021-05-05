@@ -27,6 +27,8 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG") == 'TRUE'
 
+DEBUG_PROPAGATE_EXCEPTIONS = True
+
 ALLOWED_HOSTS =  ['pedroasa-calendar-app.herokuapp.com', '.localhost', '127.0.0.1']
 
 CSRF_COOKIE_SECURE = True
